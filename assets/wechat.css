@@ -1,0 +1,141 @@
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      }
+      body {
+        background-color: #f7f7f7;
+        color: #333;
+      }
+      .header {
+        height: 200px;
+        background-color: #2e2e2e;
+        position: relative;
+        overflow: hidden;
+      }
+      .header-bg {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        opacity: 0.7;
+      }
+      .header-content {
+        position: absolute;
+        bottom: 20px;
+        left: 20px;
+        color: white;
+      }
+      .timer {
+        font-size: 14px;
+        margin-top: 10px;
+        background-color: rgba(0, 0, 0, 0.5);
+        padding: 5px 10px;
+        border-radius: 4px;
+      }
+      .container {
+        margin-bottom: 20px;
+      }
+      .user-bar {
+        background-color: white;
+        padding: 15px;
+        display: flex;
+        align-items: center;
+        border-bottom: 1px solid #eaeaea;
+      }
+      .user-avatar {
+        width: 40px;
+        height: 40px;
+        border-radius: 4px;
+        margin-right: 10px;
+        background-color: #ddd;
+      }
+      .signature {
+        flex: 1;
+        font-size: 15px;
+        color: #999;
+        font-style: italic;
+      }
+      .moments {
+        margin-top: 10px;
+      }
+      .post {
+        background-color: white;
+        margin-bottom: 10px;
+        padding: 15px;
+        border-bottom: 1px solid #eaeaea;
+      }
+      .post-header {
+        display: flex;
+        margin-bottom: 10px;
+      }
+      .post-avatar {
+        width: 40px;
+        height: 40px;
+        border-radius: 4px;
+        margin-right: 10px;
+      }
+      .post-user {
+        font-weight: 500;
+        font-size: 16px;
+        margin-bottom: 3px;
+      }
+      .post-time {
+        font-size: 12px;
+        color: #999;
+      }
+      .post-content {
+        margin-bottom: 10px;
+        font-size: 15px;
+        line-height: 1.5;
+        padding-left: 48px;
+        padding-right: 5px;
+      }
+      .post-images {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 5px;
+        margin-bottom: 10px;
+        padding-left: 48px;
+        padding-right: 10px;
+      }
+      .post-image {
+        width: 100%;
+        aspect-ratio: 1;
+        object-fit: cover;
+        border-radius: 4px;
+      }
+      .post-protected {
+        color: #999;
+        font-style: italic;
+        padding-left: 48px;
+      }
+      .modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.5);
+        z-index: 1000;
+      }
+      .modal-content {
+        background: white;
+        width: 300px;
+        margin: 100px auto;
+        padding: 20px;
+        border-radius: 5px;
+      }
+      .modal input {
+        width: 100%;
+        padding: 8px;
+        margin: 10px 0;
+      }
+      .modal button {
+        background: #07C160;
+        color: white;
+        border: none;
+        padding: 8px 15px;
+        border-radius: 4px;
+      }
