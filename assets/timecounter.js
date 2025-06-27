@@ -59,3 +59,128 @@
     setInterval(updateTimeCounter, 1000);
     loadPosts();
   });
+
+
+    let allPosts = [];
+    let page = 0;
+    const pageSize = 5;
+    let currentProtectedId = null;
+
+    // 事件委托处理图片点击放大和密码访问弹窗
+    document.addEventListener('click', (e) => {
+      // 图片放大
+      if (e.target.classList.contains('post-image')) {
+        const src = e.target.getAttribute('src');
+        const modal = document.createElement('div');
+        modal.style.cssText = `
+          position:fixed;top:0;left:0;width:100vw;height:100vh;
+          background:rgba(0,0,0,0.8);display:flex;align-items:center;justify-content:center;z-index:9999;
+        `;
+        modal.innerHTML = `<img src="${src}" style="max-width:90vw;max-height:90vh;border:5px solid white;">`;
+        modal.onclick = () => document.body.removeChild(modal);
+        document.body.appendChild(modal);
+      }
+
+      // 点击受保护内容弹出密码框
+      if (e.target.classList.contains('post-protected')) {
+        currentProtectedId = e.target.dataset.id;
+        document.getElementById('passwordModal').style.display = 'flex';
+      }
+    });
+
+    async function loadAllPosts() {
+      const res = await fetch('/api/posts');
+      allPosts = await res.json();
+      renderNextPage();
+    }
+
+    function renderNextPage() {
+      const container = document.getElementById('momentsContainer');
+      const posts = allPosts.slice(page * pageSize, (page + 1) * pageSize);
+      page++;
+
+      posts.forEach(post => {
+        const postEl = document.createElement('div');
+        postEl.className = 'post';
+        postEl.id = `post-${post.id}`;
+
+        const content = post.protected
+          ? `<div class="post-protected" style="color: gray; cursor: pointer;" data-id="${post.id}">此内容需要密码访问</div>`
+          : `<div class="post-content">${post.content}</div>`;
+
+        const images = !post.protected && post.images?.length
+          ? `<div class="post-images">${post.images.map(img => `<img src="${img}" class="post-image" style="cursor:pointer; max-width:100px; margin-right:5px;">`).join('')}</div>`
+          : '';
+
+        postEl.innerHTML = `
+          <div class="post-header">
+            <img src="https://img.0413.fun/assets/j123toux.png" class="post-avatar" />
+            <div>
+              <div class="post-user">我</div>
+              <div class="post-time">${post.date}</div>
+            </div>
+          </div>
+          ${content}
+          ${images}
+        `;
+        container.appendChild(postEl);
+      });
+    }
+
+async function verifyPassword() {
+  const password = document.getElementById('passwordInput').value;
+  const hashed = await hash(password);
+
+  const res = await fetch('/api/verify-password', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ postId: currentProtectedId, passwordHash: hashed })
+  });
+
+  const data = await res.json();
+  if (data.valid) {
+    const res2 = await fetch('/api/post/' + currentProtectedId);
+    const post = await res2.json();
+    renderPostContent(post);
+    document.getElementById('passwordModal').style.display = 'none';
+  } else {
+    alert('密码错误');
+  }
+}
+
+async function hash(text) {
+  const encoder = new TextEncoder();
+  const data = encoder.encode(text);
+  const buffer = await crypto.subtle.digest('SHA-256', data);
+  return Array.from(new Uint8Array(buffer)).map(b => b.toString(16).padStart(2, '0')).join('');
+}
+
+function renderPostContent(post) {
+  const postEl = document.getElementById('post-' + post.id);
+  if (!postEl) return;
+
+  postEl.innerHTML = `
+    <div class="post-header">
+      <img src="https://img.0413.fun/assets/mimi.png" class="post-avatar" />
+      <div>
+        <div class="post-user">我</div>
+        <div class="post-time">${post.date}</div>
+      </div>
+    </div>
+    <div class="post-content">${post.content}</div>
+    ${post.images?.length ? `
+      <div class="post-images">
+        ${post.images.map(img => `
+          <img src="${img}" class="post-image" style="cursor:pointer; max-width:100px; margin-right:5px;">
+        `).join('')}
+      </div>` : ''}
+  `;
+}
+
+    window.onscroll = () => {
+      if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 100) {
+        renderNextPage();
+      }
+    };
+
+    loadAllPosts();
