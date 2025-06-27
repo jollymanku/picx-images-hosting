@@ -139,3 +139,19 @@
         padding: 8px 15px;
         border-radius: 4px;
       }
+    #passwordModal {
+      position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+      background: rgba(0,0,0,0.6); display: none;
+      align-items: center; justify-content: center; z-index: 10000;
+    }
+    .modal-content {
+      background: #fff; padding: 20px; border-radius: 8px;
+      text-align: center; box-shadow: 0 0 10px rgba(0,0,0,0.3);
+    }
+    .modal-content input { width: 100%; padding: 6px; margin-top: 10px; border: 1px solid #ccc; }
+    .modal-content button {
+      margin-top: 10px; padding: 6px 12px;
+      background: #1c90f3; color: white; border: none; border-radius: 4px;
+    }
+    .like-button { cursor: pointer; color: #888; user-select: none; }
+    .like-button.liked { color: red; font-weight: bold; }
