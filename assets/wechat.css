@@ -36,6 +36,26 @@
       .container {
         margin-bottom: 20px;
       }
+
+      /* 默认移动端样式保持不变（一般都是 100%） */
+
+      @media (min-width: 768px) {
+        /* PC端样式限制宽度并居中 */
+        .header {
+          width: 550px;
+          height: 200px;
+          margin: 0 auto;
+          background-color: #2e2e2e;
+          position: relative;
+          overflow: hidden;
+        }
+      
+        .container {
+          width: 550px;
+          margin: 0 auto 20px;
+        }
+      }
+
       .user-bar {
         background-color: white;
         padding: 15px;
