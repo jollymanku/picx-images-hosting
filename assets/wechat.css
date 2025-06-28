@@ -64,17 +64,19 @@
         border-bottom: 1px solid #eaeaea;
       }
       .user-avatar {
+        flex: 1;
+        font-size: 15px;
+        color: #999;
+        font-style: italic;
+        text-align: right;
+        margin-right: 15px;
+      }
+      .signature {
         width: 40px;
         height: 40px;
         border-radius: 4px;
         margin-right: 10px;
         background-color: #ddd;
-      }
-      .signature {
-        flex: 1;
-        font-size: 15px;
-        color: #999;
-        font-style: italic;
       }
       .moments {
         margin-top: 10px;
