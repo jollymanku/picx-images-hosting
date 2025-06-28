@@ -184,3 +184,18 @@ function renderPostContent(post) {
     };
 
     loadAllPosts();
+
+  // 禁止双指缩放
+  document.addEventListener('gesturestart', function (e) {
+    e.preventDefault();
+  });
+
+  // 禁止双击放大（延迟300ms内的双击）
+  let lastTouchEnd = 0;
+  document.addEventListener('touchend', function (e) {
+    const now = new Date().getTime();
+    if (now - lastTouchEnd <= 300) {
+      e.preventDefault();
+    }
+    lastTouchEnd = now;
+  }, false);
