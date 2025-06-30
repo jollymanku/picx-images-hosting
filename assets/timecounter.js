@@ -80,7 +80,32 @@
         modal.onclick = () => document.body.removeChild(modal);
         document.body.appendChild(modal);
       }
+      // 首页全局密码
+          async function hashPassword(text) {
+            const data = new TextEncoder().encode(text);
+            const hashBuffer = await crypto.subtle.digest("SHA-256", data);
+            return Array.from(new Uint8Array(hashBuffer)).map(b => b.toString(16).padStart(2, '0')).join('');
+          }
+          async function verifyAndLoad() {
+            const pwd = document.getElementById("view-password").value;
+            const hash = await hashPassword(pwd);
+            const res = await fetch("/api/verify-global-password", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ passwordHash: hash }),
+            });
+            const result = await res.json();
+            if (result.valid) {
+              const html = await fetch("/posts-html").then(r => r.text());
+              document.getElementById("posts-container").innerHTML = html;
+              document.getElementById("locked-container").remove();
+              document.getElementById("posts-container").classList.remove("hidden");
+            } else {
+              document.getElementById("password-error").style.display = "block";
+            }
+          }
 
+      
       // 点击受保护内容弹出密码框
       if (e.target.classList.contains('post-protected')) {
         currentProtectedId = e.target.dataset.id;
