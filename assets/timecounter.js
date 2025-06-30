@@ -131,15 +131,7 @@ async function verifyPassword() {
   const password = document.getElementById('passwordInput').value;
   const hashed = await hash(password);
 
-  const res = await fetch('/api/verify-password', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ postId: currentProtectedId, passwordHash: hashed })
-  });
-
-  const data = await res.json();
-if (data.valid) {
-  const res2 = await fetch('/api/post/' + currentProtectedId, {
+  const res = await fetch('/api/post/' + currentProtectedId, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
@@ -147,12 +139,17 @@ if (data.valid) {
     body: JSON.stringify({ passwordHash: hashed })
   });
 
-  const post = await res2.json();
+  if (res.status === 403) {
+    const data = await res.json();
+    if (data.valid === false) {
+      alert('密码错误');
+      return;
+    }
+  }
+
+  const post = await res.json();
   renderPostContent(post);
   document.getElementById('passwordModal').style.display = 'none';
-} else {
-    alert('密码错误');
-  }
 }
 
 async function hash(text) {
