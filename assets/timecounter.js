@@ -138,12 +138,19 @@ async function verifyPassword() {
   });
 
   const data = await res.json();
-  if (data.valid) {
-    const res2 = await fetch('/api/post/' + currentProtectedId);
-    const post = await res2.json();
-    renderPostContent(post);
-    document.getElementById('passwordModal').style.display = 'none';
-  } else {
+if (data.valid) {
+  const res2 = await fetch('/api/post/' + currentProtectedId, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ passwordHash: hashed })
+  });
+
+  const post = await res2.json();
+  renderPostContent(post);
+  document.getElementById('passwordModal').style.display = 'none';
+} else {
     alert('密码错误');
   }
 }
