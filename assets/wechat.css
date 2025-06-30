@@ -64,7 +64,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            height: 35vh;
+            height: 45vh;
           }
           .password-box {
             background: rgba(255, 255, 255, 0.85);
