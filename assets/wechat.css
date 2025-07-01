@@ -58,9 +58,9 @@
       }
 
           #locked-container {
-            background-image: url(https://img.0413.fun/assets/blur-bg.jpg);
+            background-image: url(https://img.0413.fun/assets/blur-bg.webp);
             background-size: cover;
-            background-position: center;
+            #background-position: center;
             backdrop-filter: blur(10px);
             display: flex;
             align-items: center;
