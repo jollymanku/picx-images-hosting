@@ -136,7 +136,7 @@ async function verifyPassword() {
     headers: {
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify({ password })
+    body: JSON.stringify({ passwordHash: hashed })
   });
 
   if (res.status === 403) {
